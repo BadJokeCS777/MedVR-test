@@ -1,5 +1,4 @@
-﻿using System;
-using Mirror;
+﻿using Mirror;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -13,8 +12,6 @@ public class Arrow : NetworkBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         enabled = false;
-        Debug.Log("Collided: " + collision.gameObject.name);
-        
         transform.SetParent(collision.transform);
     }
 
