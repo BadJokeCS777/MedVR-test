@@ -1,7 +1,8 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Player : NetworkBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
 #if !UNITY_ANDROID
    private const string Horizontal = nameof(Horizontal);
@@ -14,8 +15,8 @@ public class Player : NetworkBehaviour
    [SerializeField] private float _speed;
    [SerializeField] private float _lookSensitivity;
    [SerializeField] private Transform _head;
-   [SerializeField] private KeyCode _forwardButton;
    [SerializeField] private HeelLock _heelLock;
+   [SerializeField] private MoveButton _moveButton;
 
    private void Update()
    {
@@ -39,7 +40,7 @@ public class Player : NetworkBehaviour
       if (headRotation.sqrMagnitude >= DeadZone)
          RotateHead(headRotation);
       
-      if (Input.GetKey(_forwardButton))
+      if (_moveButton.IsPressed)
          Move();
    }
 
