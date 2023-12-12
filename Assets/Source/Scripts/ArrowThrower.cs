@@ -4,6 +4,7 @@ using UnityEngine;
 public class ArrowThrower : NetworkBehaviour
 {
    [SerializeField] private Arrow _arrowPrefab;
+   [SerializeField] private ArrowsList _list;
    [SerializeField] private Transform _throwPoint;
    [SerializeField] private ArrowThrowButton _throwButton;
 
@@ -22,5 +23,6 @@ public class ArrowThrower : NetworkBehaviour
    {
       Arrow arrow = Instantiate(_arrowPrefab, _throwPoint.position, _throwPoint.rotation);
       NetworkServer.Spawn(arrow.gameObject);
+      _list.Add(arrow);
    }
 }

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Mirror;
 
-public class CharactersList : MonoBehaviour
+public class CharactersList : NetworkBehaviour
 {
     private List<Character> _characters;
-
-    public int Count => _characters.Count;
     
+    private ObjectsCounter _objectsCounter;
+
     public static CharactersList Instance { get; private set; }
 
     private void Awake()
@@ -21,10 +21,17 @@ public class CharactersList : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        _objectsCounter = ObjectsCounter.Instance;
+    }
+
     public void Add(Character character)
     {
         character.Destroyed += OnDestroyed;
         _characters.Add(character);
+        
+        IncreaseObjectsCount();
     }
 
     public void DeleteAll()
@@ -33,6 +40,8 @@ public class CharactersList : MonoBehaviour
         {
             character.Destroyed -= OnDestroyed;
             character.Destroy();
+        
+            DecreaseObjectsCount();
         }
 
         _characters = new List<Character>();
@@ -42,5 +51,19 @@ public class CharactersList : MonoBehaviour
     {
         character.Destroyed -= OnDestroyed;
         _characters.Remove(character);
+        
+        DecreaseObjectsCount();
+    }
+
+    [ClientRpc]
+    private void IncreaseObjectsCount()
+    {
+        _objectsCounter.Increase();
+    }
+
+    [ClientRpc]
+    private void DecreaseObjectsCount()
+    {
+        _objectsCounter.Decrease();
     }
 }

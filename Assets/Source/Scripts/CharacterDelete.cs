@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterDelete : MonoBehaviour
@@ -15,6 +16,7 @@ public class CharacterDelete : MonoBehaviour
         _button.onClick.RemoveListener(OnClick);
     }
 
+    [Server]
     private void OnClick()
     {
         CharactersList.Instance.DeleteAll();

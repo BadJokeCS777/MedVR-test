@@ -1,10 +1,9 @@
-using System;
 using Mirror;
 using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-#if !UNITY_ANDROID
+#if !UNITY_ANDROID || UNITY_EDITOR
    private const string Horizontal = nameof(Horizontal);
    private const string Vertical = nameof(Vertical);
    private const string Heel = nameof(Heel);
@@ -21,7 +20,12 @@ public class PlayerMovement : NetworkBehaviour
    private void Start()
    {
       if (isLocalPlayer)
+      {
          _head.DisableRenderer();
+#if UNITY_ANDROID
+         Input.gyro.enabled = true;
+#endif
+      }
    }
 
    private void Update()
@@ -31,7 +35,7 @@ public class PlayerMovement : NetworkBehaviour
 
       Vector3 headRotation;
       
-#if !UNITY_ANDROID
+#if !UNITY_ANDROID || UNITY_EDITOR
       float horizontal = Input.GetAxis(Horizontal);
       float vertical = Input.GetAxis(Vertical);
       float heel = Input.GetAxis(Heel);
@@ -40,7 +44,9 @@ public class PlayerMovement : NetworkBehaviour
 #else
       //todo: rotate by android inertial sensors
       
-      headRotation = Vector3.zero;
+      headRotation = Input.gyro.rotationRate;
+      headRotation.x *= -1f;
+      headRotation.y *= -1f;
 #endif
       
       if (headRotation.sqrMagnitude >= DeadZone)
