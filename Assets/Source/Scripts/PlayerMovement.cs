@@ -1,6 +1,5 @@
 using Mirror;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -14,9 +13,15 @@ public class PlayerMovement : NetworkBehaviour
    
    [SerializeField] private float _speed;
    [SerializeField] private float _lookSensitivity;
-   [SerializeField] private Transform _head;
+   [SerializeField] private Head _head;
    [SerializeField] private HeelLock _heelLock;
    [SerializeField] private MoveButton _moveButton;
+
+   private void Start()
+   {
+      if (isLocalPlayer)
+         _head.DisableRenderer();
+   }
 
    private void Update()
    {
@@ -54,7 +59,7 @@ public class PlayerMovement : NetworkBehaviour
 
    private void Move()
    {
-      Vector3 forward = _head.forward;
+      Vector3 forward = _head.Forward;
       forward.y = 0f;
       transform.Translate(_speed * Time.deltaTime * forward.normalized);
    }
