@@ -67,7 +67,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _lifetime: 10
-  _speedRange: {x: 2, y: 4}
+  _speedRange: {x: 1, y: 2}
   _moveDurationRange: {x: 2, y: 6}
 --- !u!1001 &3541945154534741694
 PrefabInstance:

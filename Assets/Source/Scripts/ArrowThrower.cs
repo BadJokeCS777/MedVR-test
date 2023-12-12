@@ -5,11 +5,16 @@ public class ArrowThrower : NetworkBehaviour
 {
    [SerializeField] private Arrow _arrowPrefab;
    [SerializeField] private Transform _throwPoint;
+   [SerializeField] private ArrowThrowButton _throwButton;
 
-   private void Update()
+   private void OnEnable()
    {
-      if (Input.GetMouseButtonDown(0))
-         CmdThrow();
+      _throwButton.Clicked += CmdThrow;
+   }
+
+   private void OnDisable()
+   {
+      _throwButton.Clicked -= CmdThrow;
    }
 
    [Command]
