@@ -1,5 +1,7 @@
-﻿using Mirror;
+﻿using System;
+using Mirror;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Character : NetworkBehaviour
 {
@@ -11,6 +13,8 @@ public class Character : NetworkBehaviour
     private float _moveTimer;
     private float _speed;
     private float _duration;
+
+    public event Action<Character> Destroyed;
     
     private void Start()
     {
@@ -38,6 +42,11 @@ public class Character : NetworkBehaviour
         _lifeTimer += deltaTime;
     }
 
+    public void Destroy()
+    {
+        DestroySelf();
+    }
+    
     private void UpdateValues()
     {
         _moveTimer = 0f;
@@ -49,6 +58,7 @@ public class Character : NetworkBehaviour
     [Server]
     private void DestroySelf()
     {
+        Destroyed?.Invoke(this);
         NetworkServer.Destroy(gameObject);
     }
 }

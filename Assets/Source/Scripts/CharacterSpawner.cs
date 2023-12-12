@@ -21,7 +21,8 @@ public class CharacterSpawner : NetworkBehaviour
     [Command]
     private void CmdSpawn()
     {
-        Character arrow = Instantiate(_characterPrefab, _spawnPoint.position, Quaternion.identity);
-        NetworkServer.Spawn(arrow.gameObject);
+        Character character = Instantiate(_characterPrefab, _spawnPoint.position, Quaternion.identity);
+        NetworkServer.Spawn(character.gameObject);
+        CharactersList.Instance.Add(character);
     }
 }
