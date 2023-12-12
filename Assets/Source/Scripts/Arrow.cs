@@ -26,10 +26,19 @@ public class Arrow : NetworkBehaviour
     private void Update()
     {
         if (_lifeTimer > _lifetime)
-            NetworkServer.Destroy(gameObject);
+        {
+            DestroySelf();
+            return;
+        }
         
         float deltaTime = Time.deltaTime;
         _lifeTimer += deltaTime;
         transform.Translate(_speed * deltaTime * transform.forward, Space.World);
+    }
+    
+    [Server]
+    private void DestroySelf()
+    {
+        NetworkServer.Destroy(gameObject);
     }
 }

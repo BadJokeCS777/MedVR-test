@@ -25,7 +25,7 @@ public class Character : NetworkBehaviour
 
         if (_lifeTimer > _lifetime)
         {
-            NetworkServer.Destroy(gameObject);
+            DestroySelf();
             return;
         }
         
@@ -44,5 +44,11 @@ public class Character : NetworkBehaviour
         _speed = Random.Range(_speedRange.x, _speedRange.y);
         _duration = Random.Range(_moveDurationRange.x, _moveDurationRange.y);
         transform.forward = new Vector3(Random.Range(-1f, 1f),0f, Random.Range(-1f, 1f)).normalized;
+    }
+    
+    [Server]
+    private void DestroySelf()
+    {
+        NetworkServer.Destroy(gameObject);
     }
 }
